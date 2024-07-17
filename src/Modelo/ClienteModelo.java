@@ -9,23 +9,40 @@ package Modelo;
  * @author 59397
  */
 public class ClienteModelo extends PersonaModelo{
-    private String nCarnetmedico;
+    private boolean carnetPromocion;
+    private int idPersona;
 
     public ClienteModelo() {
     }
 
-    public ClienteModelo(String nCarnetmedico, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
-        super(nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
-        this.nCarnetmedico = nCarnetmedico;
+    public ClienteModelo(boolean carnetPromocion, int idPersona) {
+        this.carnetPromocion = carnetPromocion;
+        this.idPersona = idPersona;
     }
 
-    public String getnCarnetmedico() {
-        return nCarnetmedico;
+    public ClienteModelo(boolean carnetPromocion, int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
+        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
+        this.carnetPromocion = carnetPromocion;
+        this.idPersona = idPersona;
     }
 
-    public void setnCarnetmedico(String nCarnetmedico) {
-        this.nCarnetmedico = nCarnetmedico;
+   
+    public boolean getCarnetPromocion() {
+        return carnetPromocion;
     }
+
+    public void setCarnetPromocion(boolean carnetPromocion) {
+        this.carnetPromocion = carnetPromocion;
+    }
+
+    public int getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(int idPersona) {
+        this.idPersona = idPersona;
+    }
+    
     
       public String imprimir() {
         return "DATOS PERSONALES\n"
@@ -35,6 +52,6 @@ public class ClienteModelo extends PersonaModelo{
                 + "DIRECCION:" + getDireccion() + "\n"
                 + "FECHA DE NACIMIENTO;" + getFechaNacimiento() + "\n"
                 + "TELEFONO:" + getTelefono() + "\n"
-                + "CLAVE:" + getnCarnetmedico() + "\n";
+                + "CLAVE:" + getCarnetPromocion() + "\n";
     }
 }

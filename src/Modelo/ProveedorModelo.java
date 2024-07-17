@@ -10,14 +10,23 @@ package Modelo;
  */
 public class ProveedorModelo extends PersonaModelo{
     private String contacto;
+    private int idPersona;
 
     public ProveedorModelo() {
     }
 
-    public ProveedorModelo(String contacto, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
-        super(nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
+    public ProveedorModelo(String contacto, int idPersona) {
         this.contacto = contacto;
+        this.idPersona = idPersona;
     }
+
+    public ProveedorModelo(String contacto, int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
+        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
+        this.contacto = contacto;
+        this.idPersona = idPersona;
+    }
+
+    
 
     public String getContacto() {
         return contacto;
@@ -26,6 +35,15 @@ public class ProveedorModelo extends PersonaModelo{
     public void setContacto(String contacto) {
         this.contacto = contacto;
     }
+
+    public int getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(int idPersona) {
+        this.idPersona = idPersona;
+    }
+    
     
       public String imprimir() {
         return "DATOS PERSONALES\n"
