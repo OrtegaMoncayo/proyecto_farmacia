@@ -8,25 +8,28 @@ package Modelo;
  *
  * @author 59397
  */
-public class ClienteModelo extends PersonaModelo{
+public class ClienteModelo extends PersonaModelo {
+
     private boolean carnetPromocion;
     private int idPersona;
+    private int idCliente;
 
     public ClienteModelo() {
     }
 
-    public ClienteModelo(boolean carnetPromocion, int idPersona) {
+    public ClienteModelo(boolean carnetPromocion, int idPersona, int idCliente) {
         this.carnetPromocion = carnetPromocion;
         this.idPersona = idPersona;
+        this.idCliente = idCliente;
     }
 
-    public ClienteModelo(boolean carnetPromocion, int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
-        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
+    public ClienteModelo(boolean carnetPromocion, int idPersona, int idCliente, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento, String usuario, String clave) {
+        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento, usuario, clave);
         this.carnetPromocion = carnetPromocion;
         this.idPersona = idPersona;
+        this.idCliente = idCliente;
     }
 
-   
     public boolean getCarnetPromocion() {
         return carnetPromocion;
     }
@@ -42,9 +45,16 @@ public class ClienteModelo extends PersonaModelo{
     public void setIdPersona(int idPersona) {
         this.idPersona = idPersona;
     }
-    
-    
-      public String imprimir() {
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public String imprimir() {
         return "DATOS PERSONALES\n"
                 + "NOMBRE;" + getNombre() + "\n"
                 + "APELLIDO:" + getApellido() + "\n"
@@ -54,4 +64,6 @@ public class ClienteModelo extends PersonaModelo{
                 + "TELEFONO:" + getTelefono() + "\n"
                 + "CLAVE:" + getCarnetPromocion() + "\n";
     }
+
+ 
 }

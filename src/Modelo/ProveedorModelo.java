@@ -8,7 +8,8 @@ package Modelo;
  *
  * @author 59397
  */
-public class ProveedorModelo extends PersonaModelo{
+public class ProveedorModelo extends PersonaModelo {
+
     private String contacto;
     private int idPersona;
 
@@ -20,13 +21,11 @@ public class ProveedorModelo extends PersonaModelo{
         this.idPersona = idPersona;
     }
 
-    public ProveedorModelo(String contacto, int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
-        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
+    public ProveedorModelo(String contacto, int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento, String usuario, String clave) {
+        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento, usuario, clave);
         this.contacto = contacto;
         this.idPersona = idPersona;
     }
-
-    
 
     public String getContacto() {
         return contacto;
@@ -43,9 +42,8 @@ public class ProveedorModelo extends PersonaModelo{
     public void setIdPersona(int idPersona) {
         this.idPersona = idPersona;
     }
-    
-    
-      public String imprimir() {
+
+    public String imprimir() {
         return "DATOS PERSONALES\n"
                 + "NOMBRE;" + getNombre() + "\n"
                 + "APELLIDO:" + getApellido() + "\n"

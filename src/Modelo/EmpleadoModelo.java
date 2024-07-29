@@ -22,12 +22,14 @@ public class EmpleadoModelo extends PersonaModelo{
         this.idPersona = idPersona;
     }
 
-    public EmpleadoModelo(double salario, String puesto,int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
-        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento);
+    public EmpleadoModelo(double salario, String puesto, int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento, String usuario, String clave) {
+        super(idPersona, nombre, apellido, cedula, direccion, telefono, fechaNacimiento, usuario, clave);
         this.salario = salario;
         this.puesto = puesto;
         this.idPersona = idPersona;
     }
+
+   
 
    
     public double getSalario() {

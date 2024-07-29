@@ -8,19 +8,24 @@ package Modelo;
  *
  * @author 59397
  */
-public class DetallePedido extends Pedidos{
+public class DetalleProducto {
+
     private int cantidad;
     private double precioUnitario;
+    private int idProducto;
+    private int idPedido;
 
-    public DetallePedido() {
+    public DetalleProducto() {
     }
 
-    public DetallePedido(int cantidad, double precioUnitario, String fechaPedido, int total) {
-        super(fechaPedido, total);
+    public DetalleProducto(int cantidad, double precioUnitario, int idProducto, int idPedido) {
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
+        this.idProducto = idProducto;
+        this.idPedido = idPedido;
     }
 
+  
     public int getCantidad() {
         return cantidad;
     }
@@ -36,6 +41,21 @@ public class DetallePedido extends Pedidos{
     public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
-    
-    
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public int getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
+    }
+
 }

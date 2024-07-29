@@ -17,11 +17,13 @@ public class PersonaModelo {
     private String direccion;
     private String telefono;
     private String fechaNacimiento;
+    private String usuario;
+    private String clave;
 
     public PersonaModelo() {
     }
 
-    public PersonaModelo(int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento) {
+    public PersonaModelo(int idPersona, String nombre, String apellido, String cedula, String direccion, String telefono, String fechaNacimiento, String usuario, String clave) {
         this.idPersona = idPersona;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -29,6 +31,8 @@ public class PersonaModelo {
         this.direccion = direccion;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
+        this.usuario = usuario;
+        this.clave = clave;
     }
 
     public int getIdPersona() {
@@ -85,6 +89,22 @@ public class PersonaModelo {
 
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
 }
