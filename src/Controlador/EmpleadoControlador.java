@@ -10,6 +10,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import controlador.ConexionBDD;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -41,12 +42,12 @@ public class EmpleadoControlador {
                 ejecutar.close();
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR" + e);
         }
     }
 
-    public int buscarEmpleado(String cedula) {
+    public int buscarIdPersonaEmpleado(String cedula) {
         try {
             String consultaSQL = "select idpersona from persona where cedula='" + cedula + "';";
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
@@ -58,34 +59,90 @@ public class EmpleadoControlador {
                 System.out.println("ingrese una cedula valida ");
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("COMUNIQUESE CON EL ALMINISTRADOR DEL SISTEMA PARA EL SISTEMA" + e);
         }
         return 0;
 
     }
 
+    public EmpleadoModelo buscarDatosCliente(String cedula) {
+        EmpleadoModelo eM = new EmpleadoModelo();
+        try {
+            String consultaSQL = "SELECT * FROM persona p "
+                    + "JOIN empleado e ON p.idpersona = e.idpersona "
+                    + "WHERE p.cedula = '" + cedula + "';";
+            ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            resultado = ejecutar.executeQuery();
+            if (resultado.next()) {
+
+                eM.setNombre(resultado.getString("nombres"));
+                eM.setApellido(resultado.getString("apellidos"));
+                eM.setCedula(resultado.getString("cedula"));
+                eM.setDireccion(resultado.getString("direccion"));
+                eM.setFechaNacimiento(resultado.getString("fechaNacimiento"));
+                eM.setTelefono(resultado.getString("telefono"));
+                eM.setPuesto(resultado.getString("puesto"));
+                eM.setSalario(resultado.getDouble("salario"));
+
+                eM.imprimir();
+                resultado.close();
+                return eM;
+            } else {
+                System.out.println("Ingrese una cédula válida");
+                resultado.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Comuníquese con el administrador" + e);
+        }
+        return eM;
+
+    }
+
     public void ActualisarEmpleado(String cedula, EmpleadoModelo eM, PersonaModelo pM) {
         try {
-            String consultaSQL = "UPDATE empleado SET puesto ="
-                    + "'" + eM.getPuesto() + "' and " + eM.getSalario() + " "
-                    + "WHERE "
-                    + "idpersona = (SELECT idpersona FROM persona WHERE cedula = "
-                    + "'" + cedula + "')";
+       
+        String consultaSQLPersona = "UPDATE persona SET cedula = ?, nombres = ?, apellidos = ?, direccion = ?, fechaNacimiento = ?, telefono = ? WHERE cedula = ?";
+        ejecutar = (PreparedStatement) connection.prepareCall(consultaSQLPersona);
+        ejecutar.setString(1, cedula);
+        ejecutar.setString(2, pM.getNombre());
+        ejecutar.setString(3, pM.getApellido());
+        ejecutar.setString(4, pM.getDireccion());
+        ejecutar.setString(5, pM.getFechaNacimiento());
+        ejecutar.setString(6, pM.getTelefono());
+        ejecutar.setString(7, cedula);
+        
+        int resPersona = ejecutar.executeUpdate();
+        
+        if (resPersona > 0) {
+            System.out.println("LOS DATOS DEL EMPLEADO HAN SIDO ACTUALIZADOS CON ÉXITO");
+
+            
+            String consultaSQL = "UPDATE empleado SET puesto = ?, salario = ? WHERE idpersona = (SELECT idpersona FROM persona WHERE cedula = ?)";
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            ejecutar.setString(1, eM.getPuesto());
+            ejecutar.setDouble(2, eM.getSalario());
+            ejecutar.setString(3, cedula);
+            
             int res = ejecutar.executeUpdate();
+            
             if (res > 0) {
-                System.out.println("LA PERSONA HA SIDO CREADA CON ÉXITO");
-                ejecutar.close();
+                System.out.println("EL PUESTO Y EL SALARIO HA SIDO ACTUALIZADO CON ÉXITO");
             } else {
                 System.out.println("FAVOR INGRESE CORRECTAMENTE LOS DATOS SOLICITADOS");
-                ejecutar.close();
             }
 
-        } catch (Exception e) {
-            System.out.println("ERROR" + e);
+            ejecutar.close();
+        } else {
+            System.out.println("FAVOR INGRESE CORRECTAMENTE LOS DATOS SOLICITADOS");
         }
+
+        ejecutar.close();
+        
+    } catch (SQLException e) {
+        System.out.println("CORRA EL FIN DEL MUNDO ESTA CERCA");
     }
+}
 
     public void eliminarEmpleado(String cedula) {
         try {
@@ -93,42 +150,46 @@ public class EmpleadoControlador {
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
             int res = ejecutar.executeUpdate();
             if (res > 0) {
-                System.out.println("LA PERSONA HA SIDO ELIMINADA");
+                System.out.println("EL EMPLEADO HA SIDO ELIMINADA");
                 ejecutar.close();
             } else {
                 System.out.println("ERROR AL ELIMINAR PERSONA");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("CORRA EL FIN DEL MUNDO ESTA CERCA");
         }
 
     }
 
-    public ArrayList<EmpleadoModelo> listaClientePersona() {
+    public ArrayList<EmpleadoModelo> listaEmpleadoPersona(String cedula) {
         ArrayList<EmpleadoModelo> listaEmpleado = new ArrayList<>();
 
         try {
-            String consultaSQL = "SELECT persona.cedula,"
-                    + " persona.nombres,"
-                    + " persona.apellidos,"
-                    + " persona.direccion,"
-                    + " persona.telefono,"
-                    + " empleado.puesto"
+            String consultaSQL = "SELECT persona.cedula, "
+                    + "persona.nombres, "
+                    + "persona.apellidos, "
+                    + "persona.direccion, "
+                    + "persona.telefono, "
+                    + "empleado.puesto "
                     + "FROM empleado "
-                    + "JOIN persona ON empleado.idpersona = persona.idpersona;";
+                    + "JOIN persona ON empleado.idpersona = persona.idpersona "
+                    + "WHERE persona.cedula = ?;";
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            ejecutar.setString(1, cedula);
             resultado = ejecutar.executeQuery();
-            if (resultado.next()) {
+            while (resultado.next()) {
                 EmpleadoModelo empleado = new EmpleadoModelo();
-                empleado.setCedula(resultado.getString("Cedula"));
-                empleado.setNombre(resultado.getString("Nombre"));
-                empleado.setApellido(resultado.getString("Apellido:"));
-                empleado.setPuesto(resultado.getString("Puesto de travajo:"));
+                empleado.setCedula(resultado.getString("cedula"));
+                empleado.setNombre(resultado.getString("nombres"));
+                empleado.setApellido(resultado.getString("apellidos"));
+                empleado.setDireccion(resultado.getString("direccion"));
+                empleado.setTelefono(resultado.getString("telefono"));
+                empleado.setPuesto(resultado.getString("puesto"));
                 listaEmpleado.add(empleado);
-            } else {
-                System.out.println("ingrese una cedula valida ");
+
             }
-        } catch (Exception e) {
+            resultado.close();
+        } catch (SQLException e) {
             System.out.println("Error al obtener la lista de clientes: " + e);
 
         }

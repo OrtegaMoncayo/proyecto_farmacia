@@ -58,11 +58,11 @@ public class EmpleadoModelo extends PersonaModelo{
     
       public String imprimir() {
         return "DATOS PERSONALES\n"
-                + "NOMBRE;" + getNombre() + "\n"
+                + "NOMBRE:" + getNombre() + "\n"
                 + "APELLIDO:" + getApellido() + "\n"
-                + "CEDULA;" + getCedula() + "\n"
+                + "CEDULA:" + getCedula() + "\n"
                 + "DIRECCION:" + getDireccion() + "\n"
-                + "FECHA DE NACIMIENTO;" + getFechaNacimiento() + "\n"
+                + "FECHA DE NACIMIENTO:" + getFechaNacimiento() + "\n"
                 + "TELEFONO:" + getTelefono() + "\n"
                 + "PUESTO:" + getPuesto() + "\n"
                 + "SALARIO:" + getSalario() + "\n";

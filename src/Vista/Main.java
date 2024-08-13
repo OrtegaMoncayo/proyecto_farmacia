@@ -4,14 +4,20 @@
  */
 package Vista;
 
+import Controlador.ClearConsola;
 import Controlador.ClienteControlador;
+import Controlador.DetalleProductoControlador;
 import Controlador.EmpleadoControlador;
+import Controlador.PedidoControlador;
 import Controlador.PersonaControlador;
+import Controlador.ProductoControlador;
 import Controlador.ProveedorControlador;
 import Modelo.ClienteModelo;
+import Modelo.DetalleProducto;
 import Modelo.EmpleadoModelo;
 import Modelo.Pedidos;
 import Modelo.PersonaModelo;
+import Modelo.Producto;
 import Modelo.ProveedorModelo;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,15 +32,59 @@ public class Main {
         Scanner es = new Scanner(System.in);
         int i = 1;
         do {
-            System.out.println("BIENVENIDO EN LA FARMACIA ECONOMIC");
-            System.out.println("SELECCIONE EL MODO EN EL QUE QUIERE ENTRAR\n"
-                    + "1.Crear un Usuario\n"
-                    + "2.Inicia Sesion\n"
-                    + "0.Salir");
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+            System.out.println("█▄▄ █ █▀▀ █▄░█ █░█ █▀▀ █▄░█ █ █▀▄ █▀█");
+            System.out.println("█▄█ █ ██▄ █░▀█ ▀▄▀ ██▄ █░▀█ █ █▄▀ █▄█");
+            System.out.println("****************************************");
+            System.out.println("*                                      *");
+            System.out.println("*       LA FARMACIA ECONOMIC           *");
+            System.out.println("*                                      *");
+            System.out.println("*        ____                          *");
+            System.out.println("*       /    \\ ____  ____  ____       *");
+            System.out.println("*      /      \\    \\/    \\/   \\    *");
+            System.out.println("*     /        \\              \\      *");
+            System.out.println("*    /          \\              \\     *");
+            System.out.println("*   /____________\\______________\\    *");
+            System.out.println("*                                      *");
+            System.out.println("*  Su Salud y Bienestar, Nuestra       *");
+            System.out.println("*           Prioridad                  *");
+            System.out.println("*                                      *");
+            System.out.println("****************************************");
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+            System.out.println("*------------------------------------------------*");
+            System.out.println("|  SELECCIONE EL MODO EN EL QUE QUIERE ENTRAR\n  |");
+            System.out.println("|------------------------------------------------|");
+            System.out.println("|1.Crear un Usuario                              |");
+            System.out.println("|2.Inicia Sesion                                 |");
+            System.out.println("|0.Salir                                         |");
+            System.out.println("*------------------------------------------------*");
             int usu = es.nextInt();
             es.nextLine();
+            ClearConsola.clearScreen();
+            System.out.println("Pantalla limpia");
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
             if (usu == 1) {
-                System.out.println("Ingrese los siguientes datos informativos");
+
+                System.out.println("*******************************************");
+                System.out.println("*                                         *");
+                System.out.println("*         CREACIÓN DE NUEVO USUARIO       *");
+                System.out.println("*                                         *");
+                System.out.println("*          ____                           *");
+                System.out.println("*         /    \\                         *");
+                System.out.println("*        /      \\                        *");
+                System.out.println("*       /        \\                       *");
+                System.out.println("*      /          \\                      *");
+                System.out.println("*     /____________\\                     *");
+                System.out.println("*                                         *");
+                System.out.println("*******************************************");
+                System.out.println("                                           ");
+                System.out.println("*-----------------------------------------*");
+                System.out.println("|Ingrese los siguientes datos informativos|");
+                System.out.println("*-----------------------------------------*");
+
+//--------------------------------------------CREAR USUARIO/EMPLEADO------------------------------------------------------------------------------------
                 PersonaModelo pM = new PersonaModelo();
                 System.out.print("Ingrese su Nombre: ");
                 pM.setNombre(es.nextLine());
@@ -44,7 +94,7 @@ public class Main {
                 pM.setCedula(es.nextLine());
                 System.out.print("Ingrese una Dirección: ");
                 pM.setDireccion(es.nextLine());
-                System.out.print("Ingrese su Fecha de Nacimiento: ");
+                System.out.print("Ingrese su Fecha de Nacimiento(DD-MM-AAAA): ");
                 pM.setFechaNacimiento(es.nextLine());
                 System.out.print("Ingrese un número Telefónico: ");
                 pM.setTelefono(es.nextLine());
@@ -54,7 +104,7 @@ public class Main {
                 pM.setClave(es.nextLine());
 
                 PersonaControlador pC = new PersonaControlador();
-                pC.crearPersona(pM);
+                pC.crearPersona(pM, true);
 
                 System.out.println("Ingrese los siguientes datos Empleado");
                 int idPersona = pC.buscarIdPersona(pM.getCedula());
@@ -69,8 +119,25 @@ public class Main {
 
                 EmpleadoControlador eC = new EmpleadoControlador();
                 eC.crearEmpleado(eM);
-
+                ClearConsola.clearScreen();
+                System.out.println("Pantalla limpia");
+//--------------------------------------------------------INICIO DE SESIÓN------------------------------------------------------------------------------------------
             } else if (usu == 2) {
+
+                System.out.println("****************************************");
+                System.out.println("*                                      *");
+                System.out.println("*           INICIAR SESIÓN             *");
+                System.out.println("*                                      *");
+                System.out.println("*         __________________           *");
+                System.out.println("*        |                  |          *");
+                System.out.println("*        |   Usuario:       |          *");
+                System.out.println("*        |                  |          *");
+                System.out.println("*        |   Contraseña:    |          *");
+                System.out.println("*        |__________________|          *");
+                System.out.println("*                                      *");
+                System.out.println("****************************************");
+
+//----------------------------------------AUTENTIFICADOR DEL USUARIO/EMPLEADO------------------------------------------------------------------------------
                 boolean autenticado = false;
                 do {
                     System.out.println("INGRESE USUARIO Y CONTRASEÑA");
@@ -81,7 +148,6 @@ public class Main {
 
                     PersonaControlador pC1 = new PersonaControlador();
                     String resultado = pC1.usuariContracena(usuario, clave);
-
                     if (resultado != null) {
                         System.out.println("Bienvenido " + resultado);
                         autenticado = true;
@@ -89,32 +155,65 @@ public class Main {
                         System.out.println("Usuario y/o contraseña incorrectos. Intente nuevamente.");
                     }
                 } while (!autenticado);
+                ClearConsola.clearScreen();
+                System.out.println("Pantalla limpia");
+//----------------------------------------------------------MENU PRINCIPAL-------------------------------------------------------------------------------------------                
                 if (autenticado) {
                     do {
-                        System.out.println("BIENVENIDO EN LA FARMACIA ECONOMIC");
-                        System.out.println("SELECCIONE EL MODO EN EL QUE QUIERE ENTRAR\n"
-                                + "1.Cliente\n"
-                                + "2.Proveedor\n"
-                                + "3.Pedidos\n"
-                                + "4.Producto\n"
-                                + "4.Empleado\n"
-                                + "0.Salir");
+
+                        System.out.println("****************************************");
+                        System.out.println("*                                      *");
+                        System.out.println("*   MENÚ PRINCIPAL - FARMACIA ECONOMIC *");
+                        System.out.println("*                                      *");
+                        System.out.println("* 1. Cliente                           *");
+                        System.out.println("* 2. Proveedor                         *");
+                        System.out.println("* 3. Pedidos                           *");
+                        System.out.println("* 4. Producto                          *");
+                        System.out.println("* 5. Empleado                          *");
+                        System.out.println("* 0. Salir                             *");
+                        System.out.println("*                                      *");
+                        System.out.println("****************************************");
+
                         int op = es.nextInt();
                         es.nextLine();
+
+//-------------------------------------------LINEA DE SALIR DEL PROGRAMA-----------------------------------------------------------------------------------
                         if (op == 0) {
                             System.out.println("Saliendo del programa...");
                             break;
                         }
+//-------------------------MENU DEL CREACION,ACTULIZACION,BUSQUEDA,ELIMINACION Y REALIZAR PEDIDOS DEL CLIENTE------------------------------------------
                         if (op == 1) {
-                            System.out.println("Elija el tipo de Opción\n"
-                                    + "1.Crear Cliente\n"
-                                    + "2.Actualizar Cliente\n"
-                                    + "2.Buscar Cliente\n"
-                                    + "3.Realizar Pedido\n");
+                            System.out.println("*------------------------------*");
+                            System.out.println("*  Elija el tipo de Opción     *");
+                            System.out.println("*------------------------------*");
+                            System.out.println("*1.Crear Cliente               *");
+                            System.out.println("*2.Actualizar Cliente          *");
+                            System.out.println("*3.Buscar Cliente              *");
+                            System.out.println("*4.Eliminar Cliente            *");
+                            System.out.println("*5.Realizar Pedido             *");
+                            System.out.println("*------------------------------*");
                             int sm1 = es.nextInt();
                             es.nextLine();
-                            if (sm1 == 1 || sm1 == 2 || sm1 == 3) {
+//--------------------------------------------------------CREAR CLIENTE-------------------------------------------------------------------------------------------------
+                            if (sm1 == 1 || sm1 == 2 || sm1 == 3 || sm1 == 4 || sm1 == 5) {
+
                                 if (sm1 == 1) {
+
+                                    System.out.println("****************************************");
+                                    System.out.println("*                                      *");
+                                    System.out.println("*       CREACIÓN DE NUEVO CLIENTE      *");
+                                    System.out.println("*                                      *");
+                                    System.out.println("*        ____                          *");
+                                    System.out.println("*       /    \\                        *");
+                                    System.out.println("*      /      \\                       *");
+                                    System.out.println("*     /        \\                      *");
+                                    System.out.println("*    /          \\                     *");
+                                    System.out.println("*   /____________\\                    *");
+                                    System.out.println("*                                      *");
+                                    System.out.println("****************************************");
+
+                                    //CREAR PERSONA
                                     System.out.println("Ingrese los siguientes datos informativos");
                                     PersonaModelo pM = new PersonaModelo();
                                     System.out.print("Ingrese su Nombre: ");
@@ -125,13 +224,13 @@ public class Main {
                                     pM.setCedula(es.nextLine());
                                     System.out.print("Ingrese una Dirección: ");
                                     pM.setDireccion(es.nextLine());
-                                    System.out.print("Ingrese su Fecha de Nacimiento: ");
+                                    System.out.print("Ingrese su Fecha de Nacimiento(AAAA/MM/DD): ");
                                     pM.setFechaNacimiento(es.nextLine());
                                     System.out.print("Ingrese un número Telefónico: ");
                                     pM.setTelefono(es.nextLine());
 
                                     PersonaControlador pC = new PersonaControlador();
-                                    pC.crearPersona(pM);
+                                    pC.crearPersona(pM, false);
 
                                     System.out.println("Ingrese los siguientes datos Cliente");
                                     ClienteModelo cM = new ClienteModelo();
@@ -157,171 +256,480 @@ public class Main {
                                     ClienteControlador cC = new ClienteControlador();
                                     cC.crearCliente(cM);
 
+//---------------------------------------------------------ACTILIZAR CLIENTE-------------------------------------------------------------------------------------------------
                                 } else if (sm1 == 2) {
+                                    System.out.println("Actulizar el cliente");
+
                                     System.out.print("Ingrese la cédula del cliente: ");
                                     String cedula = es.next();
 
                                     ClienteControlador cC = new ClienteControlador();
-                                    cC.buscarClienteIdCliente(cedula);
+
+                                    ClienteModelo cM1 = cC.buscarDatosCliente(cedula);
+                                    System.out.println(cM1.imprimir());
+
+                                    System.out.println("Actualizar los datos del cliente");
+                                    PersonaModelo pM = new PersonaModelo();
+
+                                    System.out.println("Ingrese el nuevo Nombre:");
+                                    pM.setNombre(es.next());
+                                    System.out.println("Ingrese el nuevo Apellido:");
+                                    pM.setApellido(es.next());
+                                    System.out.println("Ingrese la nueva Dirección:");
+                                    pM.setDireccion(es.next());
+                                    System.out.print("Ingrese su Fecha de Nacimiento(AAAA-MM-DD): ");
+                                    pM.setFechaNacimiento(es.next());
+                                    System.out.println("Ingrese el nuevo Teléfono:");
+                                    pM.setTelefono(es.next());
+
+                                    System.out.println("Actulizar el carnet de promoción");
                                     ClienteModelo cM = new ClienteModelo();
+                                    int y = 0;
+                                    do {
+                                        System.out.print("¿Tiene carnet de promoción? (Si/No): ");
+                                        String carnet = es.next();
+                                        if (carnet.equalsIgnoreCase("si")) {
+                                            cM.setCarnetPromocion(true);
+                                            y = 1;
+                                        } else if (carnet.equalsIgnoreCase("No")) {
+                                            cM.setCarnetPromocion(false);
+                                            y = 1;
+                                        } else {
+                                            System.out.println("Ingrese un valor correcto");
+                                            y = 0;
+                                        }
+                                    } while (y == 0);
 
-                                    if (cM != null) {
-                                        System.out.println("Información del Cliente:");
-                                        System.out.println("Nombre: " + cM.getNombre());
-                                        System.out.println("Apellidos: " + cM.getApellido());
-                                        System.out.println("Cédula: " + cM.getCedula());
-                                        System.out.println("Dirección: " + cM.getDireccion());
-                                        System.out.println("Fecha de Nacimiento: " + cM.getFechaNacimiento());
-                                        System.out.println("Teléfono: " + cM.getTelefono());
-                                        System.out.println("Carnet de Promoción: " + (cM.getCarnetPromocion() ? "Sí" : "No"));
-                                    } else {
-                                        System.out.println("Cliente no encontrado.");
-                                    }
+                                    cC.ActualizarCliente(cedula, cM, pM);
+
+//-----------------------------------------------------------BUSCAR CLIENTE------------------------------------------------------------------------------------------------
                                 } else if (sm1 == 3) {
-                                    ClienteControlador cC=new ClienteControlador();
-                                    ArrayList<ClienteModelo> listaCliente ;
-                                }
-                            } else if (op == 2) {
-                                System.out.println("Elija el tipo de Opción\n"
-                                        + "1.Crear Proveedor\n"
-                                        + "2.Buscar Proveedor\n"
-                                        + "3.Pedido realizado");
-                                int sm2 = es.nextInt();
-                                es.nextLine();
-                                if (sm2 == 1 || sm2 == 2 || sm2 == 3) {
-                                    if (sm2 == 1) {
-                                        System.out.println("Ingrese los siguientes datos informativos");
-                                        PersonaModelo pM = new PersonaModelo();
-                                        System.out.print("Ingrese su Nombre: ");
-                                        pM.setNombre(es.nextLine());
-                                        System.out.print("Ingrese su Apellidos: ");
-                                        pM.setApellido(es.nextLine());
-                                        System.out.print("Ingrese su número de cédula: ");
-                                        pM.setCedula(es.nextLine());
-                                        System.out.print("Ingrese una Dirección: ");
-                                        pM.setDireccion(es.nextLine());
-                                        System.out.print("Ingrese su Fecha de Nacimiento: ");
-                                        pM.setFechaNacimiento(es.nextLine());
-                                        System.out.print("Ingrese un número Telefónico: ");
-                                        pM.setTelefono(es.nextLine());
 
-                                        PersonaControlador pC = new PersonaControlador();
-                                        pC.crearPersona(pM);
+                                    System.out.println("INGRESE LA CÉDULA");
+                                    String cedula = es.next();
+                                    ClienteControlador cC = new ClienteControlador();
+                                    ClienteModelo cM = cC.buscarDatosCliente(cedula);
+                                    System.out.println(cM.imprimir());
 
-                                        System.out.println("Ingrese los siguientes datos Proveedor");
-                                        int idPersona = pC.buscarIdPersona(pM.getCedula());
+//---------------------------------------------------------ELIMINAR CLIENTE-------------------------------------------------------------------------------------------
+                                } else if (sm1 == 4) {
 
-                                        ProveedorModelo prM = new ProveedorModelo();
-                                        System.out.print("Ingrese el Contacto del Proveedor: ");
-                                        prM.setContacto(es.nextLine());
-                                        prM.setIdPersona(idPersona);
+                                    System.out.println("INGRESE LA CÉDULA");
+                                    String cedula = es.next();
+                                    ClienteControlador cC = new ClienteControlador();
+                                    cC.eliminarCliente(cedula);
 
-                                        ProveedorControlador prC = new ProveedorControlador();
-                                        prC.crearProveedor(prM);
+//--------------------------------------------------------REALIZAR PEDIDO---------------------------------------------------------------------------------------------
+                                } else if (sm1 == 5) {
+//                                    Buscar Cliente
+                                    System.out.println("Ingrese los siguientes datos informativos");
+                                    System.out.println("Ingrese la cédula");
+                                    String cedula = es.next();
 
-                                    } else if (sm2 == 2) {
-                                        // Lógica para buscar proveedor
-                                    } else if (sm2 == 3) {
-                                        // Lógica para realizar pedido
+                                    ClienteControlador cC = new ClienteControlador();
+                                    ClienteModelo cM = cC.buscarDatosCliente(cedula);
+                                    System.out.println("Ingrese los siguientes datos Proveedor");
+                                    int idCliente = cC.buscarIdCliente(cedula);
+
+                                    if (cM == null) {
+                                        System.out.println("Cliente no encontrado. Ingrese una cédula válida.");
+                                        return;
                                     }
-                                } else if (op == 3) {
-                                    System.out.println("Elija el tipo de Opción\n"
-                                            + "1.Buscar Pedido Realizado\n"
-                                            + "2.Detalle Pedido");
-                                    int sm4 = es.nextInt();
+
+                                    System.out.println(cM.imprimir());
+
+                                    // CREAR PEDIDO
+                                    System.out.println("Ingrese los siguientes datos");
+                                    Pedidos p = new Pedidos();
+                                    p.setIdCliente(idCliente);
+
+                                    System.out.println("Ingrese la Fecha de Pedido (YYYY-MM-DD):");
+                                    p.setFechaPedido(es.next());
+                                    System.out.println("Ingrese el Total del Pedido:");
+                                    p.setTotal(es.nextDouble());
+
+                                    PedidoControlador peC = new PedidoControlador();
+                                    peC.crearPedido(p);
+
+                                    int idPedido = peC.buscarIdPedido(cedula);
+                                    if (idPedido == 0) {
+                                        System.out.println("No se pudo crear el pedido.");
+                                        return;
+                                    }
+                                    System.out.println("ID del pedido: " + idPedido);
+
+                                    // BUSCANDO PRODUCTO
+                                    System.out.print("Ingrese el nombre del producto:\n");
+                                    String nombreProducto = es.next();
                                     es.nextLine();
-                                    if (sm4 == 1 || sm4 == 2) {
-                                        if (sm4 == 1) {
-                                            // Lógica para crear pedido
-                                        } else if (sm4 == 2) {
-                                            // Lógica para buscar pedido realizado
-                                        }
-                                    } else if (op == 4) {
-                                        System.out.println("Elija el tipo de Opción\n"
-                                                + "1.Crear Producto\n"
-                                                + "2.Buscar Producto\n"
-                                                + "3.Detalle del Producto");
-                                        int sm3 = es.nextInt();
-                                        es.nextLine();
-                                        if (sm3 == 1 || sm3 == 2 || sm3 == 3) {
-                                            if (sm3 == 1) {
-                                                // Lógica para crear producto
-                                            } else if (sm3 == 2) {
-                                                // Lógica para buscar producto
-                                            } else if (sm3 == 3) {
-                                                // Lógica para detalle del producto
-                                            }
-                                        } else if (op == 5) {
-                                            System.out.println("Elija el tipo de Opción\n"
-                                                    + "1.Crear Empleados\n"
-                                                    + "2.Buscar Empleados\n"
-                                                    + "2.inventario\n"
-                                                    + "2.Pedido de entrega\n"
-                                                    + "2.crear producto\n");
-                                            int sm5 = es.nextInt();
-                                            es.nextLine();
-                                            if (sm5 == 1 || sm5 == 2) {
-                                                if (sm5 == 1) {
-                                                    System.out.println("Ingrese los siguientes datos informativos");
-                                                    PersonaModelo pM = new PersonaModelo();
-                                                    System.out.print("Ingrese su Nombre: ");
-                                                    pM.setNombre(es.nextLine());
-                                                    System.out.print("Ingrese su Apellidos: ");
-                                                    pM.setApellido(es.nextLine());
-                                                    System.out.print("Ingrese su número de cédula: ");
-                                                    pM.setCedula(es.nextLine());
-                                                    System.out.print("Ingrese una Dirección: ");
-                                                    pM.setDireccion(es.nextLine());
-                                                    System.out.print("Ingrese su Fecha de Nacimiento: ");
-                                                    pM.setFechaNacimiento(es.nextLine());
-                                                    System.out.print("Ingrese un número Telefónico: ");
-                                                    pM.setTelefono(es.nextLine());
-                                                    System.out.print("Ingrese su Usuario: ");
-                                                    pM.setUsuario(es.nextLine());
-                                                    System.out.print("Ingrese un número de Clave: ");
-                                                    pM.setClave(es.nextLine());
+                                    System.out.println("Ingrese el código del producto:\n");
+                                    int codigo = es.nextInt();
+                                    es.nextLine();
 
-                                                    PersonaControlador pC = new PersonaControlador();
-                                                    pC.crearPersona(pM);
+                                    ProductoControlador prC = new ProductoControlador();
+                                    Producto pr = prC.buscarDatosProducto(nombreProducto, codigo);
+                                    int idProducto = prC.buscarIdProducto(codigo);
 
-                                                    System.out.println("Ingrese los siguientes datos Empleado");
-                                                    int idPersona = pC.buscarIdPersona(pM.getCedula());
+                                    System.out.println(pr.imprimir());
+                                    System.out.println("ID del producto: " + idProducto);
 
-                                                    EmpleadoModelo eM = new EmpleadoModelo();
-                                                    System.out.print("Ingrese el Puesto del Empleado: ");
-                                                    eM.setPuesto(es.next());
-                                                    System.out.print("Ingrese el Salario del Empleado: ");
-                                                    eM.setSalario(es.nextDouble());
-                                                    eM.setIdPersona(idPersona);
+                                    // CREAR DETALLE PEDIDO
+                                    DetalleProducto dp = new DetalleProducto();
+                                    dp.setIdProducto(idProducto);
+                                    dp.setIdPedido(idPedido);
 
-                                                    EmpleadoControlador eC = new EmpleadoControlador();
-                                                    eC.crearEmpleado(eM);
+                                    System.out.println("Cantidad del producto:");
+                                    dp.setCantidad(es.nextInt());
+                                    System.out.println("Precio Unitario del producto:");
+                                    dp.setPrecioUnitario(es.nextDouble());
 
-                                                } else if (sm5 == 2) {
-                                                    // Lógica para buscar empleados
-                                                }
-                                            }
-                                        }
+                                    DetalleProductoControlador dpC = new DetalleProductoControlador();
+                                    dpC.crearDetalleProducto(dp);
 
-                                    }
+                                    System.out.println("Detalle del producto creado exitosamente.");
 
                                 }
 
                             }
 
-                        }
+//-------------------------MENU DEL CREACION,ACTULIZACION,BUSQUEDA Y ELIMINACION DEL PROVEEDOR--------------------------------------------------
+                        } else if (op == 2) {
+                            System.out.println("*-----------------------------*");
+                            System.out.println("|        MENU DE PROVEDOR     |");
+                            System.out.println("|-----------------------------|");
+                            System.out.println("|1.Crear Proveedor            |");
+                            System.out.println("|2.Actualizar Proveedor       |");
+                            System.out.println("|3.Buscar Proveedor           |");
+                            System.out.println("|4.Lista Proveedor            |");
+                            System.out.println("|5.Eliminar Proveedor         |");
+                            System.out.println("*-----------------------------*");
+                            int sm2 = es.nextInt();
+                            es.nextLine();
+//-----------------------------------------------------CREAR PROVEEDOR------------------------------------------------------------------------------------------------                            
+                            if (sm2 == 1 || sm2 == 2 || sm2 == 3) {
+                                if (sm2 == 1) {
+                                    System.out.println("******************************************");
+                                    System.out.println("*                                        *");
+                                    System.out.println("*        CREACIÓN DE NUEVO PROVEEDOR     *");
+                                    System.out.println("*                                        *");
+                                    System.out.println("*         ____                           *");
+                                    System.out.println("*        / __ \\                          *");
+                                    System.out.println("*       / /  \\ \\                         *");
+                                    System.out.println("*      / /    \\ \\                        *");
+                                    System.out.println("*     / /      \\ \\                       *");
+                                    System.out.println("*    /_/        \\_\\                      *");
+                                    System.out.println("*                                        *");
+                                    System.out.println("******************************************");
+                                    System.out.println("Ingrese los siguientes datos informativos");
+                                    //CREAR PERSONA
+                                    System.out.println("Ingrese los siguientes datos informativos");
+                                    PersonaModelo pM = new PersonaModelo();
+                                    System.out.print("Ingrese su Nombre: ");
+                                    pM.setNombre(es.nextLine());
+                                    System.out.print("Ingrese su Apellidos: ");
+                                    pM.setApellido(es.nextLine());
+                                    System.out.print("Ingrese su número de cédula: ");
+                                    pM.setCedula(es.nextLine());
+                                    System.out.print("Ingrese una Dirección: ");
+                                    pM.setDireccion(es.nextLine());
+                                    System.out.print("Ingrese su Fecha de Nacimiento(AAAA/MM/DD): ");
+                                    pM.setFechaNacimiento(es.nextLine());
+                                    System.out.print("Ingrese un número Telefónico: ");
+                                    pM.setTelefono(es.nextLine());
 
+                                    PersonaControlador pC = new PersonaControlador();
+                                    pC.crearPersona(pM, false);
+
+                                    System.out.println("Ingrese los siguientes datos Proveedor");
+                                    int idPersona = pC.buscarIdPersona(pM.getCedula());
+
+                                    ProveedorModelo prM = new ProveedorModelo();
+                                    System.out.print("Ingrese el Contacto del Proveedor: ");
+                                    prM.setContacto(es.nextLine());
+                                    prM.setIdPersona(idPersona);
+
+                                    ProveedorControlador prC = new ProveedorControlador();
+                                    prC.crearProveedor(prM);
+
+//----------------------------------------------------------ACTULIZAR PROVEEDOR------------------------------------------------------------------------------------------
+                                } else if (sm2 == 2) {
+
+                                    System.out.println("INGRESE LA CEDULA");
+                                    String cedula = es.next();
+
+                                    ProveedorControlador prC = new ProveedorControlador();
+
+                                    ProveedorModelo prM1 = prC.buscarDatosProveedor(cedula);
+                                    System.out.println(prM1.imprimir());
+
+                                    System.out.println("Actualizar los datos del cliente");
+                                    PersonaModelo pM = new PersonaModelo();
+
+                                    System.out.println("Ingrese el nuevo Nombre:");
+                                    pM.setNombre(es.next());
+                                    System.out.println("Ingrese el nuevo Apellido:");
+                                    pM.setApellido(es.next());
+                                    System.out.println("Ingrese el nuevo Cedula:");
+                                    pM.setCedula(es.next());
+                                    System.out.println("Ingrese el nuevo Direccion:");
+                                    pM.setDireccion(es.next());
+                                    System.out.println("Ingrese el nuevo Fecha de Nacimiento (AAAA/MM/DD):");
+                                    pM.setFechaNacimiento(es.next());
+                                    System.out.println("Ingrese el nuevo Telefono:");
+                                    pM.setTelefono(es.next());
+
+                                    ProveedorModelo prM = new ProveedorModelo();
+                                    System.out.println("Ingrese el nuevo Contacto");
+                                    prM.setContacto(es.next());
+
+                                    prC.ActualisarProveedor(cedula, prM, pM);
+
+//--------------------------------------------------------BUSCAR PROVEDOR-----------------------------------------------------------------------------------------------
+                                } else if (sm2 == 3) {
+
+                                    System.out.println("INGRESE LA CEDULA");
+                                    String cedula = es.next();
+
+                                    ProveedorControlador pC = new ProveedorControlador();
+                                    ProveedorModelo p = pC.buscarDatosProveedor(cedula);
+                                    System.out.println(p.imprimir());
+
+//--------------------------------------------------------LISTA DE PROVEEDOR------------------------------------------------------------------------------------------------
+                                } else if (sm2 == 4) {
+                                    System.out.println("Lista de Provedor");
+
+                                    ProveedorControlador pC = new ProveedorControlador();
+                                    ArrayList<ProveedorModelo> listaProveedor = pC.listaProveedorPersona();
+
+                                    for (ProveedorModelo l : listaProveedor) {
+                                        System.out.println(l.imprimir());
+                                    }
+
+//--------------------------------------------------------ELIMINAR PROVEEDOR--------------------------------------------------------------------------------------------------                                    
+                                } else if (sm2 == 5) {
+                                    System.out.println("INGRESE LA CÉDULA");
+                                    String cedula = es.next();
+                                    ProveedorControlador prC = new ProveedorControlador();
+                                    prC.eliminarProveedor(cedula);
+
+                                }
+                            }
+
+//--------------------------------------MENU DEL LISTA, BUSQUEDA Y ELIMINACION DEL PEDIDOS------------------------------------------------------------------
+                        } else if (op == 3) {
+                            System.out.println("*------------------------------*");
+                            System.out.println("|Elija el tipo de Opción       |");
+                            System.out.println("|------------------------------|");
+                            System.out.println("|1.Buscar Pedido Realizado     |");
+                            System.out.println("|2.Lista Detalle Pedido        |");
+                            System.out.println("|3.Eliminar Pedido             |");
+                            System.out.println("*------------------------------*");
+                            int sm3 = es.nextInt();
+                            es.nextLine();
+//----------------------------------------------------BUSCAR PEDIDO REALIZADO-----------------------------------------------------------------------------------------
+                            if (sm3 == 1 || sm3 == 2 || sm3 == 3) {
+
+                                if (sm3 == 1) {
+
+                                    System.out.println("INGRESE LA CEDULA");
+                                    String cedula = es.next();
+                                    PedidoControlador pC = new PedidoControlador();
+                                    ArrayList<Pedidos> listaPedido = pC.listaPedidos(cedula);
+                                    for (Pedidos l : listaPedido) {
+                                        System.out.println(l.imprimirDetallePedido());
+                                    }
+//----------------------------------------------------LISTA DE PEDIDOS--------------------------------------------------------------------------------------------------
+                                } else if (sm3 == 2) {
+
+                                    PedidoControlador pC = new PedidoControlador();
+                                    ArrayList<Pedidos> listaPedido = pC.listaPedidos();
+                                    for (Pedidos l : listaPedido) {
+                                        System.out.println(l.imprimirDetallePedidoProducto());
+                                    }
+//------------------------------------------------------ELIMINAR PEDIDOS------------------------------------------------------------------------------------------------
+                                } else if (sm3 == 2) {
+
+                                    System.out.println("INGRESE LA CÉDULA");
+                                    String cedula = es.next();
+                                    System.out.println("INGRESE EL NOMBRE DEL PRODUCTO");
+                                    String nombreProducto = es.next();
+                                    PedidoControlador pe = new PedidoControlador();
+                                    pe.eliminarPedido(cedula, nombreProducto);
+                                }
+                            }
+
+//-----------------------------------MENU DEL CREACION,ACTULIZACION,BUSQUEDA Y ELIMINACION DEL PRODUCTO-------------------------------------------------------
+                        } else if (op == 4) {
+                            System.out.println("*------------------------------*");
+                            System.out.println("|Elija el tipo de Opción       |");
+                            System.out.println("|------------------------------|");
+                            System.out.println("|1.Crear Producto              |");
+                            System.out.println("|2.Actulizar Producto          |");
+                            System.out.println("|3.Buscar Producto             |");
+                            System.out.println("|4.inventario                  |");
+                            System.out.println("|5.Elimina Producto            |");
+                            System.out.println("*------------------------------*");
+                            int sm4 = es.nextInt();
+                            es.nextLine();
+//------------------------------------------------------CREAR PRODUCTO---------------------------------------------------------------------------------------------
+                            if (sm4 == 1 || sm4 == 2 || sm4 == 3 || sm4 == 4 || sm4 == 5) {
+
+                                if (sm4 == 1) {
+
+                                    Producto pr = new Producto();
+                                    System.out.print("Ingrese su Nombre de Producto: ");
+                                    pr.setNombreProducto(es.nextLine());
+                                    System.out.print("Ingrese su Stock: ");
+                                    pr.setStock(es.nextInt());
+                                    es.nextLine();
+                                    System.out.print("Ingrese su Precio: ");
+                                    pr.setPrecio(es.nextDouble());
+                                    es.nextLine();
+                                    System.out.print("Ingrese su Marca: ");
+                                    pr.setMarca(es.nextLine());
+                                    System.out.print("Ingrese su Codigo: ");
+                                    pr.setCodigo(es.nextInt());
+                                    es.nextLine();
+
+                                    ProductoControlador prC = new ProductoControlador();
+                                    prC.crearProducto(pr);
+//------------------------------------------------------ACTULIZAR PRODUCTO-------------------------------------------------------------------------------------------------
+                                } else if (sm4 == 2) {
+                                    System.out.println("Ingrese el Nombre del Producto:");
+                                    String nombreProducto = es.next();
+                                    es.nextLine();
+                                    System.out.println("Ingrese el Código del Producto:");
+                                    int codigo = es.nextInt();
+
+                                    ProductoControlador prC = new ProductoControlador();
+                                    Producto pr1 = prC.buscarDatosProducto(nombreProducto, codigo);
+                                    System.out.println(pr1.imprimir());
+
+                                    System.out.println("Actualizar los datos del producto");
+                                    Producto pr = new Producto();
+
+                                    System.out.print("Ingrese el nuevo nombre del producto: ");
+                                    pr.setNombreProducto(es.nextLine());
+                                    es.nextLine();
+                                    System.out.print("Ingrese la nueva marca del producto: ");
+                                    pr.setMarca(es.nextLine());
+                                    System.out.print("Ingrese el nuevo precio del producto: ");
+                                    pr.setPrecio(es.nextDouble());
+                                    es.nextLine();
+                                    System.out.print("Ingrese el nuevo stock del producto: ");
+                                    pr.setStock(es.nextInt());
+                                    es.nextLine();
+                                    prC.ActualisarProducto(codigo, nombreProducto, pr);
+//---------------------------------------------------------BUSCAR PRODUCTO-----------------------------------------------------------------------------------------------
+                                } else if (sm4 == 3) {
+
+                                    System.out.println("Ingrese el Código del Producto:");
+                                    int codigo = es.nextInt();
+
+                                    ProductoControlador pC = new ProductoControlador();
+                                    ArrayList<Producto> listaProductos = pC.listarProductosConStocksuperio(codigo);
+                                    for (Producto l : listaProductos) {
+                                        System.out.println(l.imprimirDetalleProducto());
+
+                                    }
+                                     pC.stockMinimo(15);
+//-------------------------------------------------------LISTA DE PRODUCTO---------------------------------------------------------------------------------------------------
+                                } else if (sm4 == 4) {
+                                    ProductoControlador pC = new ProductoControlador();
+                                    ArrayList<Producto> listaProductos = pC.listaProducto();
+                                    for (Producto l : listaProductos) {
+                                        System.out.println(l.imprimirDetalleProducto());
+                                    }
+                                     pC.stockMinimo(15);
+//-------------------------------------------------------ELIMINAR PRODUCTO---------------------------------------------------------------------------------------------------                                    
+                                } else if (sm4 == 5) {
+                                    System.out.println("Ingrese el código del producto:");
+                                    String nombreProducto = es.next();
+                                    es.nextLine();
+                                    System.out.println("Ingrese el código del producto:");
+                                    int codigo = es.nextInt();
+                                    ProductoControlador pC = new ProductoControlador();
+                                    pC.eliminarProducto(nombreProducto, codigo);
+                                }
+                            }
+
+//---------------------------------------MENU DE ACTULIZACION,BUSQUEDA Y ELIMINACION DEL EMPLEADO----------------------------------------------------------------                            
+                        } else if (op == 5) {
+                            System.out.println("*-------------------------------*");
+                            System.out.println("|Elija el tipo de Opción        |");
+                            System.out.println("|-------------------------------|");
+                            System.out.println("|1.Actualizar Empleados         |");
+                            System.out.println("|2.Buscar Empleados             |");
+                            System.out.println("|3.Eliminar Empleados           |");
+                            System.out.println("*-------------------------------*");
+                            int sm5 = es.nextInt();
+                            es.nextLine();
+//-------------------------------------------------------ACTULIZAR EMPLEADOS----------------------------------------------------------------------------------------------
+                            if (sm5 == 1 || sm5 == 2 || sm5 == 3) {
+
+                                if (sm5 == 1) {
+
+                                    System.out.println("INGRESE LA CEDULA");
+                                    String cedula = es.next();
+
+                                    EmpleadoControlador eC = new EmpleadoControlador();
+
+                                    EmpleadoModelo eM1 = eC.buscarDatosCliente(cedula);
+                                    System.out.println(eM1.imprimir());
+
+                                    System.out.println("Actualizar los datos del cliente");
+                                    PersonaModelo pM = new PersonaModelo();
+
+                                    System.out.println("Ingrese el nuevo Nombre:");
+                                    pM.setNombre(es.next());
+                                    System.out.println("Ingrese el nuevo Apellido:");
+                                    pM.setApellido(es.next());
+                                    System.out.println("Ingrese el nuevo Cedula:");
+                                    pM.setCedula(es.next());
+                                    System.out.println("Ingrese el nuevo Direccion:");
+                                    pM.setDireccion(es.next());
+                                    System.out.println("Ingrese el nuevo Fecha de Nacimiento (AAAA/MM/DD):");
+                                    pM.setFechaNacimiento(es.next());
+                                    System.out.println("Ingrese el nuevo Telefono:");
+                                    pM.setTelefono(es.next());
+
+                                    EmpleadoModelo eM = new EmpleadoModelo();
+                                    System.out.println("Ingrese el nuevo Puesto");
+                                    eM.setPuesto(es.next());
+                                    System.out.println("Ingrese el nuevo Salario");
+                                    eM.setSalario(es.nextDouble());
+
+                                    eC.ActualisarEmpleado(cedula, eM, pM);
+//----------------------------------------------------------BUSCAR EMPLEADOS--------------------------------------------------------------------------------------------
+                                } else if (sm5 == 2) {
+
+                                    System.out.println("INGRESE LA CÉDULA");
+                                    String cedula = es.next();
+                                    EmpleadoControlador eC = new EmpleadoControlador();
+                                    ArrayList<EmpleadoModelo> listaEmpleado = eC.listaEmpleadoPersona(cedula);
+                                    for (EmpleadoModelo l : listaEmpleado) {
+                                        System.out.println(l.imprimir());
+                                    }
+//--------------------------------------------------------ELIMINAR EMPLEADO------------------------------------------------------------------------------------------------                                    
+                                } else if (sm5 == 3) {
+                                    System.out.println("INGRESE LA CÉDULA");
+                                    String cedula = es.next();
+                                    EmpleadoControlador eC = new EmpleadoControlador();
+                                    eC.eliminarEmpleado(cedula);
+
+                                }
+
+                            }
+                        }
                     } while (autenticado);
                     es.close();
-
                 }
-
             } else if (usu == 0) {
                 System.out.println("Saliendo del programa...");
                 i = 0;
             }
-        } while (i == 0);
-        es.close();
+
+        } while (i != 0);
 
     }
 }

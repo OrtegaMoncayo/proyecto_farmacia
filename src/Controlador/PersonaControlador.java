@@ -9,6 +9,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import controlador.ConexionBDD;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -23,17 +24,31 @@ public class PersonaControlador {
     PreparedStatement ejecutar;
     ResultSet resultado;
 
-    public void crearPersona(PersonaModelo pM) {
+    public void crearPersona(PersonaModelo pM, boolean requiereUsuarioYClave) {
         try {
-            String consultaSQL = "INSERT INTO persona"
-                    + "(nombres,apellidos,cedula,direccion,fechaNacimiento,telefono,usuario,clave)"
-                    + "VALUES "
-                    + "('" + pM.getNombre() + "','" + pM.getApellido() + "',"
-                    + "'" + pM.getCedula() + "','" + pM.getDireccion() + "',"
-                    + "'" + pM.getFechaNacimiento() + "','" + pM.getTelefono() + "',"
-                    + "'" + pM.getUsuario() + "'," + pM.getClave() + ");";
+            String consultaSQL;
+            if (requiereUsuarioYClave) {
+                consultaSQL = "INSERT INTO persona "
+                        + "(nombres, apellidos, cedula, direccion, fechaNacimiento, telefono, usuario, clave) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            } else {
+                consultaSQL = "INSERT INTO persona "
+                        + "(nombres, apellidos, cedula, direccion, fechaNacimiento, telefono) "
+                        + "VALUES (?, ?, ?, ?, ?, ?);";
+            }
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            ejecutar.setString(1, pM.getNombre());
+            ejecutar.setString(2, pM.getApellido());
+            ejecutar.setString(3, pM.getCedula());
+            ejecutar.setString(4, pM.getDireccion());
+            ejecutar.setString(5, pM.getFechaNacimiento());
+            ejecutar.setString(6, pM.getTelefono());
+            if (requiereUsuarioYClave) {
+                ejecutar.setString(7, pM.getUsuario()!= null ? pM.getUsuario() : "");
+                ejecutar.setString(8, pM.getClave()!= null ? pM.getClave() : "");
+            }
             int res = ejecutar.executeUpdate();
+
             if (res > 0) {
                 System.out.println("LA PERSONA HA SIDO CREADA CON ÉXITO");
                 ejecutar.close();
@@ -42,7 +57,7 @@ public class PersonaControlador {
                 ejecutar.close();
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("ERROR" + e);
         }
     }
@@ -59,41 +74,23 @@ public class PersonaControlador {
                 System.out.println("ingrese una cedula valida ");
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("COMUNIQUESE CON EL ALMINISTRADOR DEL SISTEMA PARA EL SISTEMA" + e);
         }
         return 0;
 
     }
-    public int buscarClienteIdPersona(String cedula) {
+
+    public void ActualisarPersona(String cedula, PersonaModelo pM) {
         try {
-            String consultaSQL = "select idpersona from persona where cedula='" + cedula + "';";
+            String consultaSQL = "UPDATE persona SET "
+                    + "nombre ='" + pM.getNombre() + "', apellidos = '" + pM.getApellido() + "', "
+                    + "direccion ='" + pM.getDireccion() + "', fechaNacimiento = '" + pM.getFechaNacimiento() + "',"
+                    + " telefono = '" + pM.getTelefono() + "', usuario = '" + pM.getUsuario() + "',"
+                    + " clave = '" + pM.getClave() + "'"
+                    + " WHERE cedula = '" + cedula + "';";
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
-            resultado = ejecutar.executeQuery();
-            if (resultado.next()) {
-                int idPersonas = resultado.getInt("idPersona");
-                return idPersonas;
-            } else {
-                System.out.println("ingrese una cedula valida ");
-            }
-
-        } catch (Exception e) {
-            System.out.println("COMUNIQUESE CON EL ALMINISTRADOR DEL SISTEMA PARA EL SISTEMA" + e);
-        }
-        return 0;
-
-    }
-    
-       public void ActualisarPersona(String cedula, PersonaModelo pM){
-          try {
-              String consultaSQL = "UPDATE persona SET "
-                      + "nombre ='"+pM.getNombre() +"', apellidos = '"+pM.getApellido()+"', "
-                      + "direccion ='"+pM.getDireccion()+"', fechaNacimiento = '"+pM.getFechaNacimiento()+"',"
-                      + " telefono = '"+pM.getTelefono()+"', usuario = '"+pM.getUsuario()+"',"
-                      + " clave = '"+pM.getClave()+"'"
-                      + " WHERE cedula = '"+cedula+"';";
-              ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
-              int res = ejecutar.executeUpdate();
+            int res = ejecutar.executeUpdate();
             if (res > 0) {
                 System.out.println("LA PERSONA HA SIDO CREADA CON ÉXITO");
                 ejecutar.close();
@@ -101,11 +98,11 @@ public class PersonaControlador {
                 System.out.println("FAVOR INGRESE CORRECTAMENTE LOS DATOS SOLICITADOS");
                 ejecutar.close();
             }
-              
-          } catch (Exception e) {
-              System.out.println("ERROR" + e);
-          }
-      }
+
+        } catch (SQLException e) {
+            System.out.println("ERROR" + e);
+        }
+    }
 
     public String usuariContracena(String usuario, String clave) {
         try {
@@ -120,8 +117,8 @@ public class PersonaControlador {
             } else {
                 System.out.println("USUARIO Y CONTRASEÑA INCORRECTO");
             }
-        } catch (Exception e) {
-            System.out.println(""+e);
+        } catch (SQLException e) {
+            System.out.println("" + e);
         }
         return null;
     }

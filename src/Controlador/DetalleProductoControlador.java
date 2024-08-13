@@ -5,10 +5,13 @@
 package Controlador;
 
 import Modelo.DetalleProducto;
+import Modelo.Pedidos;
+import Modelo.Producto;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import controlador.ConexionBDD;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -16,32 +19,68 @@ import java.sql.ResultSet;
  */
 public class DetalleProductoControlador {
 
-    private DetalleProducto detallePedido;
+    private DetalleProducto detalleProducto;
 
     ConexionBDD conexion = new ConexionBDD();
     Connection connection = (Connection) conexion.conectar();
     PreparedStatement ejecutar;
     ResultSet resultado;
 
-    public void crearDetalleProducto(DetalleProducto dp) {
+      public void crearDetalleProducto(DetalleProducto dp) {
         try {
-            String consultaSQL = "INSERT INTO detalle_pedido"
-                    + "(idprod, idpedi,cantida, precio_unitario)"
-                    + "VALUES"
-                    + "(" + dp.getIdProducto() + "," + dp.getIdPedido() + ",'" + dp.getCantidad() + "',"
-                    + "" + dp.getPrecioUnitario() + "),";
+            String consultaSQL = "INSERT INTO detalle_producto"
+                    + "(idprod, idpedi, cantidad, precio_unitario)"
+                    + "VALUES (?, ?, ?, ?)";
             ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            ejecutar.setInt(1, dp.getIdProducto());
+            ejecutar.setInt(2, dp.getIdPedido());
+            ejecutar.setInt(3, dp.getCantidad());
+            ejecutar.setDouble(4, dp.getPrecioUnitario());
             int res = ejecutar.executeUpdate();
             if (res > 0) {
-                System.out.println("EL PEDIDO HA SIDO CREADA CON ÉXITO");
-                ejecutar.close();
+                System.out.println("EL DETALLE DEL PEDIDO HA SIDO CREADO CON ÉXITO");
             } else {
                 System.out.println("FAVOR INGRESE CORRECTAMENTE LOS DATOS SOLICITADOS");
-                ejecutar.close();
             }
-        } catch (Exception e) {
-            System.out.println("ERROR" + e);
+            ejecutar.close();
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 
+    public void ActualisarDetalleProducto(int idDetalle, DetalleProducto dp) {
+        try {
+            String consultaSQL = "UPDATE detalle_pedido SET cantidad = ?, precio_unitario = ? WHERE id = ?";
+            ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            ejecutar.setInt(1, dp.getCantidad());
+            ejecutar.setDouble(2, dp.getPrecioUnitario());
+            ejecutar.setInt(3, idDetalle);
+            int res = ejecutar.executeUpdate();
+            if (res > 0) {
+                System.out.println("EL DETALLE DEL PEDIDO HA SIDO ACTUALIZADO CON ÉXITO");
+            } else {
+                System.out.println("FAVOR INGRESE CORRECTAMENTE LOS DATOS SOLICITADOS");
+            }
+            ejecutar.close();
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
+    public void eliminarDetalleProducto(int idDetalle) {
+        try {
+            String consultaSQL = "DELETE FROM detalle_pedido WHERE id = ?";
+            ejecutar = (PreparedStatement) connection.prepareCall(consultaSQL);
+            ejecutar.setInt(1, idDetalle);
+            int res = ejecutar.executeUpdate();
+            if (res > 0) {
+                System.out.println("EL DETALLE DEL PEDIDO HA SIDO ELIMINADO CON ÉXITO");
+            } else {
+                System.out.println("ERROR AL ELIMINAR EL DETALLE DEL PEDIDO");
+            }
+            ejecutar.close();
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
 }

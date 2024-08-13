@@ -25,7 +25,6 @@ public class DetalleProducto {
         this.idPedido = idPedido;
     }
 
-  
     public int getCantidad() {
         return cantidad;
     }
@@ -56,6 +55,12 @@ public class DetalleProducto {
 
     public void setIdPedido(int idPedido) {
         this.idPedido = idPedido;
+    }
+
+    public String imprimirDetalle() {
+        return "Datos Pedidos\n"
+                + "Cantidad:" + getCantidad() + "\n"
+                + "Precio Unitario:" + getPrecioUnitario() + "\n";
     }
 
 }
